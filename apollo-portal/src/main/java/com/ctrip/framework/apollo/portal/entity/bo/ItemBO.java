@@ -1,9 +1,8 @@
 package com.ctrip.framework.apollo.portal.entity.bo;
 
-import com.ctrip.framework.apollo.common.dto.BaseDTO;
 import com.ctrip.framework.apollo.common.dto.ItemDTO;
 
-public  class ItemBO extends BaseDTO {
+public class ItemBO {
     private ItemDTO item;
     private boolean isModified;
     private boolean isDeleted;

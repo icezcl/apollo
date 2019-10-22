@@ -223,7 +223,7 @@ public class NamespaceService {
     //latest Release
     ReleaseDTO latestRelease;
     Map<String, String> releaseItems = new HashMap<>();
-    Map<String, ItemDTO> deletedItemDTOS = new HashMap<>();
+    Map<String, ItemDTO> deletedItemDTOs = new HashMap<>();
     latestRelease = releaseService.loadLatestRelease(appId, env, clusterName, namespaceName);
     if (latestRelease != null) {
       releaseItems = gson.fromJson(latestRelease.getConfigurations(), GsonType.CONFIG);
@@ -245,10 +245,10 @@ public class NamespaceService {
 
     //deleted items
     itemService.findDeletedItems(appId, env, clusterName, namespaceName).forEach(item->{
-      deletedItemDTOS.put(item.getKey(),item);
+      deletedItemDTOs.put(item.getKey(),item);
     });
 
-    List<ItemBO> deletedItems = parseDeletedItems(items, releaseItems, deletedItemDTOS);
+    List<ItemBO> deletedItems = parseDeletedItems(items, releaseItems, deletedItemDTOs);
     itemBOs.addAll(deletedItems);
     modifiedItemCnt += deletedItems.size();
 
@@ -285,7 +285,7 @@ public class NamespaceService {
     namespace.setPublic(isPublic);
   }
 
-  private List<ItemBO> parseDeletedItems(List<ItemDTO> newItems, Map<String, String> releaseItems, Map<String, ItemDTO> deletedItemDTOS) {
+  private List<ItemBO> parseDeletedItems(List<ItemDTO> newItems, Map<String, String> releaseItems, Map<String, ItemDTO> deletedItemDTOs) {
     Map<String, ItemDTO> newItemMap = BeanUtils.mapByKey("key", newItems);
 
     List<ItemBO> deletedItems = new LinkedList<>();
@@ -296,8 +296,8 @@ public class NamespaceService {
 
         deletedItem.setDeleted(true);
         ItemDTO deletedItemDto = new ItemDTO();
-        if (deletedItemDTOS.containsKey(key)) {
-          deletedItemDto = deletedItemDTOS.get(key);
+        if (deletedItemDTOs.containsKey(key)) {
+          deletedItemDto = deletedItemDTOs.get(key);
         }
         deletedItemDto.setKey(key);
         String oldValue = entry.getValue();
